@@ -53,6 +53,7 @@ public class AnagraficaRtsService {
     private final RecapitoMapper recapitoMapper;
     private final RecapitoRepository recapitoRepository;
     private final ModificaRtsMapper modificaRtsMapper;
+    private final UtenteRepository utenteRepository;
 
 
     public ResponseDto get(Long id) {
@@ -128,11 +129,10 @@ public class AnagraficaRtsService {
         rts.setIndirizzo(indirizzoRepository.saveAndFlush(indirizzo));
         List<Recapito> recapiti = recapitoMapper.mapDtoToEntity(insertRtsDto.getRecapitiDto());
         anagraficaRtsRepository.saveAndFlush(rts);
+        Utente utente = utenteRepository.findById(Long.parseLong(insertRtsDto.getUtenteId())).
+                orElseThrow(()-> new SvildepException(Messages.utenteInesistente, HttpStatus.BAD_REQUEST));
+        utente.setRts(rts);
 
-        for (Recapito recapito : recapiti) {
-            recapito.setRts(rts);
-            recapitoRepository.save(recapito);
-        }
         competenzaRtsRepository.save(competenzaRtsMapper.mapToCompetenzaRts(insertRtsDto.getProvinciaId(), rts));
         competenzaTesoreriaRepository.save(competenzaTesoreriaMapper.mapToCompetenzaTesoreria(insertRtsDto.getTesoreriaId(), rts));
         Ruolo ruolo = ruoloRepository.findRuoloByCodice(FlagRuolo.RRD);
@@ -144,13 +144,26 @@ public class AnagraficaRtsService {
     public ResponseDto modificaRts(ModificaRtsDto modificaRtsDto) {
         Rts rts = anagraficaRtsRepository.findById(Long.parseLong(modificaRtsDto.getRtsId())).
                 orElseThrow(() -> new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
-        anagraficaRtsRepository.save(modificaRtsMapper.mapDtoToRts(modificaRtsDto, rts));
         chiusuraTesoreria(rts);
         competenzaTesoreriaRepository.save(competenzaTesoreriaMapper.mapToCompetenzaTesoreria(modificaRtsDto.getTesoreriaId(), rts));
         Ruolo ruolo = ruoloRepository.findRuoloByCodice(FlagRuolo.RRD);
         chiusuraAbilitazioneUtente(rts, ruolo.getId());
-        //gestire la chiusura dell'utente e la chiusura della tesoreria nelle tabelle associative
         abilitazioneRepository.save(abilitazioneMapper.mapToAbilitazione(ruolo, modificaRtsDto.getUtenteId()));
+
+        rts = modificaRtsMapper.mapDtoToRts(modificaRtsDto, rts);
+        List<Utente> utenti = rts.getUtenti();
+        Utente utente = utenteRepository.findById(Long.parseLong(modificaRtsDto.getUtenteId()))
+                .orElseThrow(()-> new SvildepException(Messages.utenteInesistente, HttpStatus.BAD_REQUEST));
+        utente.setRts(rts);
+        utente.setFlagAbilitatoSN(FlagSN.S);
+        utenti.add(utente);
+        rts.setUtenti(utenti);
+        for (Recapito recapito : rts.getRecapiti()) {
+            recapito.setRts(rts);
+            recapitoRepository.save(recapito);
+        }
+        anagraficaRtsRepository.saveAndFlush(rts);
+
         return new ResponseDto(Messages.operazioneRiuscita, HttpStatus.OK);
 
     }
@@ -161,6 +174,7 @@ public class AnagraficaRtsService {
             for (Utente utente : rts.getUtenti()) {
                 if (abilitazione.getUtente().equals(utente)) {
                     abilitazione.setDataFine(LocalDate.now());
+                    utente.setFlagAbilitatoSN(FlagSN.N);
                 }
             }
         }
@@ -168,7 +182,7 @@ public class AnagraficaRtsService {
 
     public void chiusuraTesoreria(Rts rts) {
         CompetenzaTesoreria competenzaTesoreria =
-                competenzaTesoreriaRepository.findByDataFineBeforeAndRts_id(LocalDate.now(), rts.getId());
+                competenzaTesoreriaRepository.findByDataFineAfterAndRts_id(LocalDate.now(), rts.getId());
         competenzaTesoreria.setDataFine(LocalDate.now());
     }
 }

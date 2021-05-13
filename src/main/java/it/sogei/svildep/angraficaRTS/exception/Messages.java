@@ -8,4 +8,6 @@ public interface Messages {
     String denominazioneRtsEsistente = "esiste già una Rts con la denominazione selezionata";
 
     String operazioneRiuscita = "operazione riuscita";
+
+    String utenteInesistente = "utente non trovato";
 }

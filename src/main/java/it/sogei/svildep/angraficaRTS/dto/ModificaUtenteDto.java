@@ -7,18 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class RecapitoDto extends SvildepDto {
+public class ModificaUtenteDto extends SvildepDto {
+    @NotNull
     @ParsableLong
-    private String id;
-    @NotBlank
-    private String valoreRecapito;
-    @NotBlank
-    private String codiceTipoRecapito;
+    private String idUtente;
 }

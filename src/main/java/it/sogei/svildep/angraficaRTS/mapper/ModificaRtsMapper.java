@@ -16,13 +16,12 @@ public class ModificaRtsMapper{
     private RecapitoMapper recapitoMapper;
 
 
+
+
     public Rts mapDtoToRts(ModificaRtsDto modificaRtsDto, Rts rts) throws RuntimeException {
         rts.setRecapiti(recapitoMapper.mapDtoToEntity(modificaRtsDto.getRecapitiDto()));
         rts.setCodiceOrdinante(modificaRtsDto.getCodiceOrdinante());
-        rts.setUtenti(Collections.singletonList(Utente.builder()
-                .id(Long.parseLong(modificaRtsDto.getUtenteId()))
-                .flagAbilitatoSN(FlagSN.S)
-                .build()));
+
         return rts;
     }
 }

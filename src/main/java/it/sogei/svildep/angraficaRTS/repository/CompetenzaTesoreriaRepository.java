@@ -11,5 +11,5 @@ public interface CompetenzaTesoreriaRepository extends JpaRepository<CompetenzaT
     public CompetenzaTesoreria findByDataInizioBeforeAndDataFineAfterAndRts_id
             (LocalDate dataInizio, LocalDate dataFine, Long id);
 
-    public CompetenzaTesoreria findByDataFineBeforeAndRts_id (LocalDate dataFine, Long id);
+    public CompetenzaTesoreria findByDataFineAfterAndRts_id (LocalDate dataFine, Long id);
 }
