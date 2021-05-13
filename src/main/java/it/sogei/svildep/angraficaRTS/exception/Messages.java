@@ -12,4 +12,6 @@ public interface Messages {
     String utenteInesistente = "utente non trovato";
 
     String competenzaProvincialeGiaPresente = "Non puoi inserire una provincia gia presente nella competenza della Rts";
+
+    String chiusuraNegata = "non puoi chiudere la Rts perchè ha uno o più depositi associati";
 }

@@ -43,11 +43,15 @@ public class AnagraficaRtsController {
         if (bindingResult.hasErrors()) throw new SvildepException(bindingResult);
         return ResponseEntity.ok().body(anagraficaRtsService.modificaRts(modificaRtsDto));
     }
+
     @GetMapping("listaDirettoriRts/{id}")
     public ResponseEntity<ResponseDto> listaDirettoriRts(@Valid @PathVariable("id") String id) throws SvildepException {
         return ResponseEntity.ok().body(anagraficaRtsService.getAllDirettori(Long.parseLong(id)));
     }
-
+    @PutMapping("chiusuraRts/{id}")
+    public ResponseEntity<ResponseDto> chiudiRts(@Valid @PathVariable("id") String id) throws SvildepException {
+        return ResponseEntity.ok().body(anagraficaRtsService.chiudiRts(Long.parseLong(id)));
+    }
 
 
 }

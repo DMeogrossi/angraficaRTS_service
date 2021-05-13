@@ -7,6 +7,7 @@ import it.sogei.svildep.angraficaRTS.repository.*;
 import it.sogei.svildep.common.dto.ResponseDto;
 import it.sogei.svildep.common.entity.enums.FlagRuolo;
 import it.sogei.svildep.common.entity.enums.FlagSN;
+import it.sogei.svildep.common.entity.gestionedepositi.Deposito;
 import it.sogei.svildep.common.entity.gestionerts.CompetenzaRts;
 import it.sogei.svildep.common.entity.gestionerts.Rts;
 import it.sogei.svildep.common.entity.gestionesoggetti.Indirizzo;
@@ -51,6 +52,7 @@ public class AnagraficaRtsService {
     private final ModificaRtsMapper modificaRtsMapper;
     private final UtenteRepository utenteRepository;
     private final DirettoreMapper direttoreMapper;
+    private final DepositoRepository depositoRepository;
 
 
     public ResponseDto get(Long id) {
@@ -196,5 +198,21 @@ public class AnagraficaRtsService {
         }
         return new ResponseDto(direttori);
 
+    }
+
+    public ResponseDto chiudiRts(Long id) throws SvildepException {
+        Rts rts = rtsRepository.findById(id).orElseThrow(() ->
+                new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
+        List<Deposito> depositi = depositoRepository.findByRtsCompetente_IdAndRtsCostituzione_Id(rts.getId(), rts.getId());
+        if(!depositi.isEmpty()){
+            throw new SvildepException(Messages.chiusuraNegata, HttpStatus.BAD_REQUEST);
+        }
+        List<CompetenzaRts> competenzeDaChiudere = competenzaRtsRepository.findByRts_id(rts.getId());
+        for(CompetenzaRts competenza : competenzeDaChiudere){
+            competenza.setDataFine(LocalDate.now());
+            competenzaRtsRepository.save(competenza);
+        }
+
+        return new ResponseDto(Messages.operazioneRiuscita, HttpStatus.OK);
     }
 }
