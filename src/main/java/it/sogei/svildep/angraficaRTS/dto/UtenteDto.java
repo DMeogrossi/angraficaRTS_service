@@ -14,9 +14,8 @@ public class UtenteDto extends SvildepDto {
     private String nome;
     private String cognome;
     private String titoloDirettore;
-    private String denominazioneTesoreria;
     private String dataInizio;
     private String dataFine;
-    private String FlagRuolo;
+
 
 }

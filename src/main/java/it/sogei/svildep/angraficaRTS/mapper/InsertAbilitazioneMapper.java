@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-public class AbilitazioneMapper {
+public class InsertAbilitazioneMapper {
 
     public Abilitazione mapToAbilitazione(Ruolo ruolo, String utenteId){
         return Abilitazione.builder()

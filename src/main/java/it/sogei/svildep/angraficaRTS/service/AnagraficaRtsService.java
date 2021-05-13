@@ -11,21 +11,17 @@ import it.sogei.svildep.common.entity.gestionerts.CompetenzaRts;
 import it.sogei.svildep.common.entity.gestionerts.Rts;
 import it.sogei.svildep.common.entity.gestionesoggetti.Indirizzo;
 import it.sogei.svildep.common.entity.gestionesoggetti.Recapito;
-import it.sogei.svildep.common.entity.gestionesoggetti.TipoRecapito;
 import it.sogei.svildep.common.entity.gestionetesorerie.CompetenzaTesoreria;
 import it.sogei.svildep.common.entity.gestioneutenti.Abilitazione;
 import it.sogei.svildep.common.entity.gestioneutenti.Ruolo;
 import it.sogei.svildep.common.entity.gestioneutenti.Utente;
 import it.sogei.svildep.common.exception.SvildepException;
-import it.sogei.svildep.common.validation.annotation.ParsableLong;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +41,7 @@ public class AnagraficaRtsService {
     private final InsertRtsMapper insertRtsMapper;
     private final CompetenzaRtsMapper competenzaRtsMapper;
     private final CompetenzaTesoreriaMapper competenzaTesoreriaMapper;
-    private final AbilitazioneMapper abilitazioneMapper;
+    private final InsertAbilitazioneMapper insertAbilitazioneMapper;
     private final RuoloRepository ruoloRepository;
     private final AbilitazioneRepository abilitazioneRepository;
     private final IndirizzoMapper indirizzoMapper;
@@ -54,6 +50,7 @@ public class AnagraficaRtsService {
     private final RecapitoRepository recapitoRepository;
     private final ModificaRtsMapper modificaRtsMapper;
     private final UtenteRepository utenteRepository;
+    private final DirettoreMapper direttoreMapper;
 
 
     public ResponseDto get(Long id) {
@@ -117,7 +114,7 @@ public class AnagraficaRtsService {
     }
 
     @Transactional
-    public ResponseDto insertRts(InsertRtsDto insertRtsDto) {
+    public ResponseDto insertRts(InsertRtsDto insertRtsDto) throws SvildepException {
         List<Rts> listRts = anagraficaRtsRepository.findAll();
         for (Rts rts : listRts) {
             if (rts.getDenominazioneRTS().equals(insertRtsDto.getDenominazioneRts())) {
@@ -136,19 +133,19 @@ public class AnagraficaRtsService {
         competenzaRtsRepository.save(competenzaRtsMapper.mapToCompetenzaRts(insertRtsDto.getProvinciaId(), rts));
         competenzaTesoreriaRepository.save(competenzaTesoreriaMapper.mapToCompetenzaTesoreria(insertRtsDto.getTesoreriaId(), rts));
         Ruolo ruolo = ruoloRepository.findRuoloByCodice(FlagRuolo.RRD);
-        abilitazioneRepository.save(abilitazioneMapper.mapToAbilitazione(ruolo, insertRtsDto.getUtenteId()));
+        abilitazioneRepository.save(insertAbilitazioneMapper.mapToAbilitazione(ruolo, insertRtsDto.getUtenteId()));
         return new ResponseDto(Messages.operazioneRiuscita, HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseDto modificaRts(ModificaRtsDto modificaRtsDto) {
+    public ResponseDto modificaRts(ModificaRtsDto modificaRtsDto) throws SvildepException{
         Rts rts = anagraficaRtsRepository.findById(Long.parseLong(modificaRtsDto.getRtsId())).
                 orElseThrow(() -> new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
         chiusuraTesoreria(rts);
         competenzaTesoreriaRepository.save(competenzaTesoreriaMapper.mapToCompetenzaTesoreria(modificaRtsDto.getTesoreriaId(), rts));
         Ruolo ruolo = ruoloRepository.findRuoloByCodice(FlagRuolo.RRD);
         chiusuraAbilitazioneUtente(rts, ruolo.getId());
-        abilitazioneRepository.save(abilitazioneMapper.mapToAbilitazione(ruolo, modificaRtsDto.getUtenteId()));
+        abilitazioneRepository.save(insertAbilitazioneMapper.mapToAbilitazione(ruolo, modificaRtsDto.getUtenteId()));
 
         rts = modificaRtsMapper.mapDtoToRts(modificaRtsDto, rts);
         List<Utente> utenti = rts.getUtenti();
@@ -184,5 +181,20 @@ public class AnagraficaRtsService {
         CompetenzaTesoreria competenzaTesoreria =
                 competenzaTesoreriaRepository.findByDataFineAfterAndRts_id(LocalDate.now(), rts.getId());
         competenzaTesoreria.setDataFine(LocalDate.now());
+    }
+
+    public ResponseDto getAllDirettori(Long id) throws SvildepException {
+        Rts rts = anagraficaRtsRepository.findById(id).orElseThrow(() ->
+                new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
+        List<UtenteDto> direttori = new ArrayList<>();
+        Ruolo ruolo = ruoloRepository.findRuoloByCodice(FlagRuolo.RRD);
+        List<Abilitazione> abilitazioni = abilitazioneRepository.findByRuolo_Id(ruolo.getId());
+        for(Abilitazione abilitazione : abilitazioni){
+            if(abilitazione.getUtente().getRts().getId().equals(rts.getId())) {
+                direttori.add(direttoreMapper.convertToDto(abilitazione));
+            }
+        }
+        return new ResponseDto(direttori);
+
     }
 }
