@@ -1,7 +1,7 @@
 package it.sogei.svildep.angraficaRTS.controller;
 
-import it.sogei.svildep.angraficaRTS.dto.InsertRtsDto;
-import it.sogei.svildep.angraficaRTS.dto.ModificaRtsDto;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.InsertRtsDto;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.ModificaRtsDto;
 import it.sogei.svildep.angraficaRTS.service.AnagraficaRtsService;
 import it.sogei.svildep.common.dto.ResponseDto;
 import it.sogei.svildep.common.exception.SvildepException;

@@ -1,15 +1,11 @@
-package it.sogei.svildep.angraficaRTS.mapper;
+package it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts;
 
-import it.sogei.svildep.angraficaRTS.dto.RecapitoDto;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.RecapitoDto;
 import it.sogei.svildep.angraficaRTS.repository.TipoRecapitoRepository;
-import it.sogei.svildep.common.entity.enums.FlagTipoRecapito;
 import it.sogei.svildep.common.entity.gestionesoggetti.Recapito;
 import it.sogei.svildep.common.entity.gestionesoggetti.TipoRecapito;
-import it.sogei.svildep.common.mapper.EntityToDtoMapper;
 import it.sogei.svildep.common.mapper.Mapper;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

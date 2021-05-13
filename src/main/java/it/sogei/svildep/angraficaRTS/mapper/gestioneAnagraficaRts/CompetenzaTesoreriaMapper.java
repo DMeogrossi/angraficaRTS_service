@@ -1,7 +1,5 @@
-package it.sogei.svildep.angraficaRTS.mapper;
+package it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts;
 
-import it.sogei.svildep.angraficaRTS.dto.InsertRtsDto;
-import it.sogei.svildep.common.entity.gestionerts.CompetenzaRts;
 import it.sogei.svildep.common.entity.gestionerts.Rts;
 import it.sogei.svildep.common.entity.gestionetesorerie.CompetenzaTesoreria;
 import it.sogei.svildep.common.entity.gestionetesorerie.Tesoreria;

@@ -1,6 +1,6 @@
-package it.sogei.svildep.angraficaRTS.mapper;
+package it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts;
 
-import it.sogei.svildep.angraficaRTS.dto.IndirizzoDto;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.IndirizzoDto;
 import it.sogei.svildep.common.entity.gestionesoggetti.Indirizzo;
 
 import it.sogei.svildep.common.mapper.Mapper;

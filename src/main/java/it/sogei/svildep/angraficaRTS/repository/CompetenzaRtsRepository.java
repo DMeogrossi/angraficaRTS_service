@@ -10,4 +10,6 @@ public interface CompetenzaRtsRepository extends JpaRepository<CompetenzaRts, Lo
 
     public CompetenzaRts findByDataInizioBeforeAndDataFineAfterAndRts_Id
             (LocalDate dataInizio, LocalDate dataFine, Long id);
+
+    public List<CompetenzaRts> findByRts_id(Long id);
 }

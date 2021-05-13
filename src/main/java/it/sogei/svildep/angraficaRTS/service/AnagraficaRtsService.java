@@ -1,8 +1,8 @@
 package it.sogei.svildep.angraficaRTS.service;
 
-import it.sogei.svildep.angraficaRTS.dto.*;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.*;
 import it.sogei.svildep.angraficaRTS.exception.Messages;
-import it.sogei.svildep.angraficaRTS.mapper.*;
+import it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts.*;
 import it.sogei.svildep.angraficaRTS.repository.*;
 import it.sogei.svildep.common.dto.ResponseDto;
 import it.sogei.svildep.common.entity.enums.FlagRuolo;

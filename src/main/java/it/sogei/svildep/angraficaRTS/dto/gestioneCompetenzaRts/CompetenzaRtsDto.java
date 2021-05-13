@@ -1,4 +1,4 @@
-package it.sogei.svildep.angraficaRTS.dto;
+package it.sogei.svildep.angraficaRTS.dto.gestioneCompetenzaRts;
 
 import it.sogei.svildep.common.dto.SvildepDto;
 import lombok.Getter;
@@ -10,12 +10,8 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class UtenteDto extends SvildepDto {
-    private String nome;
-    private String cognome;
-    private String titoloDirettore;
+public class CompetenzaRtsDto extends SvildepDto {
+    private String denominazioneProvincia;
     private String dataInizio;
     private String dataFine;
-
-
 }

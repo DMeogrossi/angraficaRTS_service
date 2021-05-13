@@ -1,4 +1,4 @@
-package it.sogei.svildep.angraficaRTS.dto;
+package it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts;
 
 import it.sogei.svildep.common.dto.SvildepDto;
 import it.sogei.svildep.common.validation.annotation.ParsableLong;
@@ -15,23 +15,17 @@ import java.util.List;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class InsertRtsDto extends SvildepDto {
-    @NotBlank
-    private String denominazioneRts;
-    @NotNull
+public class ModificaRtsDto extends SvildepDto {
     @ParsableLong
-    private String provinciaId;
     @NotNull
-    @ParsableLong
-    private String comuneId;
-    private IndirizzoDto indirizzoDto;
+    private String rtsId;
     private List<RecapitoDto> recapitiDto;
     @NotBlank
     private String codiceOrdinante;
-    @NotNull
     @ParsableLong
+    @NotNull
     private String tesoreriaId;
-    @NotNull
     @ParsableLong
+    @NotNull
     private String utenteId;
 }

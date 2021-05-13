@@ -1,10 +1,8 @@
-package it.sogei.svildep.angraficaRTS.mapper;
+package it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts;
 
-import it.sogei.svildep.angraficaRTS.dto.UtenteDto;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.UtenteDto;
 import it.sogei.svildep.common.entity.gestioneutenti.Utente;
 import it.sogei.svildep.common.mapper.EntityToDtoMapper;
-import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component

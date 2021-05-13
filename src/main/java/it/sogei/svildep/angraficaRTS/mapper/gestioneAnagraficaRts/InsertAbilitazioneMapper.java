@@ -1,6 +1,5 @@
-package it.sogei.svildep.angraficaRTS.mapper;
+package it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts;
 
-import it.sogei.svildep.angraficaRTS.dto.InsertRtsDto;
 import it.sogei.svildep.common.entity.gestioneutenti.Abilitazione;
 import it.sogei.svildep.common.entity.gestioneutenti.Ruolo;
 import it.sogei.svildep.common.entity.gestioneutenti.Utente;

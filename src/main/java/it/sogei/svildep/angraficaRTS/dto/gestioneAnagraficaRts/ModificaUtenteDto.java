@@ -1,4 +1,4 @@
-package it.sogei.svildep.angraficaRTS.dto;
+package it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts;
 
 import it.sogei.svildep.common.dto.SvildepDto;
 import it.sogei.svildep.common.validation.annotation.ParsableLong;

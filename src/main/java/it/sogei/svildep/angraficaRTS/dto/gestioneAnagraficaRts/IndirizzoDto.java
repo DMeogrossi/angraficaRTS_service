@@ -1,4 +1,4 @@
-package it.sogei.svildep.angraficaRTS.dto;
+package it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts;
 
 import it.sogei.svildep.common.dto.SvildepDto;
 import it.sogei.svildep.common.validation.annotation.ParsableLong;
@@ -9,23 +9,21 @@ import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public class ModificaRtsDto extends SvildepDto {
+public class IndirizzoDto extends SvildepDto {
+
     @ParsableLong
     @NotNull
-    private String rtsId;
-    private List<RecapitoDto> recapitiDto;
+    private String indirizzoId;
     @NotBlank
-    private String codiceOrdinante;
-    @ParsableLong
-    @NotNull
-    private String tesoreriaId;
-    @ParsableLong
-    @NotNull
-    private String utenteId;
+    private String indirizzo;
+    @NotBlank
+    private String civico;
+    @NotBlank
+    private String cap;
+
 }

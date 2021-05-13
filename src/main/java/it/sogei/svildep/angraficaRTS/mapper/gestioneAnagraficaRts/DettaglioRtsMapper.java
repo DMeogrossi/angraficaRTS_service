@@ -1,17 +1,11 @@
-package it.sogei.svildep.angraficaRTS.mapper;
+package it.sogei.svildep.angraficaRTS.mapper.gestioneAnagraficaRts;
 
-import it.sogei.svildep.angraficaRTS.dto.DettaglioAnagraficaRtsDto;
-import it.sogei.svildep.common.entity.enums.FlagRuolo;
-import it.sogei.svildep.common.entity.enums.FlagSN;
+import it.sogei.svildep.angraficaRTS.dto.gestioneAnagraficaRts.DettaglioAnagraficaRtsDto;
 import it.sogei.svildep.common.entity.gestionerts.CompetenzaRts;
 import it.sogei.svildep.common.entity.gestionerts.Rts;
 import it.sogei.svildep.common.entity.gestionetesorerie.CompetenzaTesoreria;
-import it.sogei.svildep.common.entity.gestioneutenti.Abilitazione;
-import it.sogei.svildep.common.entity.gestioneutenti.Utente;
-import it.sogei.svildep.common.mapper.EntityToDtoMapper;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
