@@ -32,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnagraficaRtsService {
 
-    private final AnagraficaRtsRepository anagraficaRtsRepository;
+    private final RtsRepository rtsRepository;
     private final CompetenzaRtsRepository competenzaRtsRepository;
     private final CompetenzaTesoreriaRepository competenzaTesoreriaRepository;
     private final DettaglioRtsMapper dettaglioRtsMapper;
@@ -58,7 +58,7 @@ public class AnagraficaRtsService {
                 findByDataInizioBeforeAndDataFineAfterAndRts_id(LocalDate.now(), LocalDate.now(), id);
         CompetenzaRts competenzaRts = competenzaRtsRepository.
                 findByDataInizioBeforeAndDataFineAfterAndRts_Id(LocalDate.now(), LocalDate.now(), id);
-        Rts rts = anagraficaRtsRepository.findById(id)
+        Rts rts = rtsRepository.findById(id)
                 .orElseThrow(() -> new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
         DettaglioAnagraficaRtsDto dettaglioAnagraficaRtsDto = new DettaglioAnagraficaRtsDto();
         for (Utente utente : rts.getUtenti()) {
@@ -78,7 +78,7 @@ public class AnagraficaRtsService {
 
 
     public ResponseDto getAll() {
-        List<Rts> listaAnagraficaRts = anagraficaRtsRepository.findAll();
+        List<Rts> listaAnagraficaRts = rtsRepository.findAll();
         RtsPerListaDto rtsDto = new RtsPerListaDto();
         List<RtsPerListaDto> listaRtsDto = new ArrayList<>();
 
@@ -115,7 +115,7 @@ public class AnagraficaRtsService {
 
     @Transactional
     public ResponseDto insertRts(InsertRtsDto insertRtsDto) throws SvildepException {
-        List<Rts> listRts = anagraficaRtsRepository.findAll();
+        List<Rts> listRts = rtsRepository.findAll();
         for (Rts rts : listRts) {
             if (rts.getDenominazioneRTS().equals(insertRtsDto.getDenominazioneRts())) {
                 throw new SvildepException(Messages.denominazioneRtsEsistente, HttpStatus.BAD_REQUEST);
@@ -125,7 +125,7 @@ public class AnagraficaRtsService {
         Indirizzo indirizzo = indirizzoMapper.mapDtoToEntity(insertRtsDto.getIndirizzoDto());
         rts.setIndirizzo(indirizzoRepository.saveAndFlush(indirizzo));
         List<Recapito> recapiti = recapitoMapper.mapDtoToEntity(insertRtsDto.getRecapitiDto());
-        anagraficaRtsRepository.saveAndFlush(rts);
+        rtsRepository.saveAndFlush(rts);
         Utente utente = utenteRepository.findById(Long.parseLong(insertRtsDto.getUtenteId())).
                 orElseThrow(()-> new SvildepException(Messages.utenteInesistente, HttpStatus.BAD_REQUEST));
         utente.setRts(rts);
@@ -139,7 +139,7 @@ public class AnagraficaRtsService {
 
     @Transactional
     public ResponseDto modificaRts(ModificaRtsDto modificaRtsDto) throws SvildepException{
-        Rts rts = anagraficaRtsRepository.findById(Long.parseLong(modificaRtsDto.getRtsId())).
+        Rts rts = rtsRepository.findById(Long.parseLong(modificaRtsDto.getRtsId())).
                 orElseThrow(() -> new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
         chiusuraTesoreria(rts);
         competenzaTesoreriaRepository.save(competenzaTesoreriaMapper.mapToCompetenzaTesoreria(modificaRtsDto.getTesoreriaId(), rts));
@@ -159,7 +159,7 @@ public class AnagraficaRtsService {
             recapito.setRts(rts);
             recapitoRepository.save(recapito);
         }
-        anagraficaRtsRepository.saveAndFlush(rts);
+        rtsRepository.saveAndFlush(rts);
 
         return new ResponseDto(Messages.operazioneRiuscita, HttpStatus.OK);
 
@@ -184,7 +184,7 @@ public class AnagraficaRtsService {
     }
 
     public ResponseDto getAllDirettori(Long id) throws SvildepException {
-        Rts rts = anagraficaRtsRepository.findById(id).orElseThrow(() ->
+        Rts rts = rtsRepository.findById(id).orElseThrow(() ->
                 new SvildepException(Messages.RtsNonTrovata, HttpStatus.BAD_REQUEST));
         List<UtenteDto> direttori = new ArrayList<>();
         Ruolo ruolo = ruoloRepository.findRuoloByCodice(FlagRuolo.RRD);

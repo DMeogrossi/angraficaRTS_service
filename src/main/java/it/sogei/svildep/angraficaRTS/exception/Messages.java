@@ -10,4 +10,6 @@ public interface Messages {
     String operazioneRiuscita = "operazione riuscita";
 
     String utenteInesistente = "utente non trovato";
+
+    String competenzaProvincialeGiaPresente = "Non puoi inserire una provincia gia presente nella competenza della Rts";
 }

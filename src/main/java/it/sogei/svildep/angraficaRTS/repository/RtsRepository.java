@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 
-public interface AnagraficaRtsRepository extends JpaRepository<Rts, Long> {
+public interface RtsRepository extends JpaRepository<Rts, Long> {
 
 }
